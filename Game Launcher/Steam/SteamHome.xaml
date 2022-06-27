@@ -1,0 +1,82 @@
+﻿<Page x:Class="Game_Launcher.Steam.SteamHome"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Game_Launcher.Steam"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="SteamHome">
+
+    <Grid>
+        <DockPanel ZIndex="0" LastChildFill="True">
+            <Image Name="GameBG" Source="Images\returnal-background.jpg" Stretch="UniformToFill"></Image>
+        </DockPanel>
+        <DockPanel LastChildFill="True" ZIndex="1">
+            <Canvas DockPanel.Dock="Top" Height="75" HorizontalAlignment="Right">
+                <DockPanel Width="220" Height="50" Margin="-255,20,0,0" LastChildFill="True" Panel.ZIndex="0">
+                    <Border Panel.ZIndex="0" Name="TopMenuBG" CornerRadius="20" Background="#0f0f0f" Opacity="0.75">
+                        <Border Opacity="0.2">
+                            <Border.Effect>
+                                <BlurEffect Radius="50"/>
+                            </Border.Effect>
+                            <Border.Background>
+                                <VisualBrush  Visual="{Binding ElementName=GameBG}" Stretch="UniformToFill" />
+                            </Border.Background>
+                        </Border>
+                    </Border>
+                </DockPanel>
+                <StackPanel Panel.ZIndex="1" Width="190" Height="50" Margin="-255,20,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Height="32" Width="30" Name="imgTime" Margin="4,0,5,0"></Image>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="lblTime" FontSize="20" Foreground="White" MinWidth="49" TextAlignment="Center" Margin="0,-3,0,0">10:00</TextBlock>
+                    <Image Height="32" Width="30" Name="imgBat" Margin="14,0,5,0"></Image>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="lblBat" Foreground="White" FontSize="20" MinWidth="49" TextAlignment="Center" Margin="0,-3,0,0">100%</TextBlock>
+                </StackPanel>
+            </Canvas>
+            <StackPanel DockPanel.Dock="Bottom" Height="120">
+                <Border CornerRadius="20" BorderThickness="1" Width="650" Height="70" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <DockPanel ZIndex="1">
+                        <Border Name="BottomMenuBG" CornerRadius="25" Background="#0f0f0f" Opacity="0.85">
+                            <Border Opacity="0.2">
+                                <Border.Effect>
+                                    <BlurEffect Radius="50"/>
+                                </Border.Effect>
+                                <Border.Background>
+                                    <VisualBrush  Visual="{Binding ElementName=GameBG}" Stretch="UniformToFill" />
+                                </Border.Background>
+                            </Border>
+                        </Border>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+            <ScrollViewer VerticalAlignment="Center" VerticalScrollBarVisibility="Disabled"  PanningMode="HorizontalOnly">
+                <StackPanel HorizontalAlignment="Left" Height="350" Orientation="Horizontal">
+                    <StackPanel Name="Game1" Width="290" Height="290">
+                        <Canvas>
+                            <Button x:Name="Game1btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="30,0,0,0" Padding="0,0,0,0" Click="Game1btn_Click">
+                                <Border Name="Game1BG"  Height="288" Width="290" BorderBrush="LightBlue" BorderThickness="4" CornerRadius="10"></Border>
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="10"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Canvas>
+                    </StackPanel>
+                    <StackPanel Name="Game2" Width="290" Height="290">
+                        <Canvas>
+                            <Button x:Name="Game2btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="35,0,0,0" Padding="0,0,0,0" Click="Game2btn_Click">
+                                <Border Name="Game2BG"  Height="288" Width="290" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="10"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Canvas>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</Page>
