@@ -75,6 +75,18 @@
                             </Button>
                         </Canvas>
                     </StackPanel>
+                    <StackPanel Name="Game3" Width="290" Height="290">
+                        <Canvas>
+                            <Button x:Name="Game3btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="35,0,0,0" Padding="0,0,0,0" Click="Game3btn_Click">
+                                <Border Name="Game3BG"  Height="288" Width="290" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                <Button.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="10"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </Canvas>
+                    </StackPanel>
                 </StackPanel>
             </ScrollViewer>
         </DockPanel>

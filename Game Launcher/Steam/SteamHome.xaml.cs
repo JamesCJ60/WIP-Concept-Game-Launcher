@@ -34,7 +34,7 @@ namespace Game_Launcher.Steam
         public ImageBrush gameImageBrush;
         public static string path = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
         public string GameName = "";
-        public string[] GameList = { "Returnal", "HZD" };
+        public string[] GameList = { "Returnal", "HZD", "Doom Eternal" };
         public SteamHome()
         {
             InitializeComponent();
@@ -56,6 +56,8 @@ namespace Game_Launcher.Steam
             gameImageBrush = new ImageBrush(gameImage);
             Game2BG.Background = gameImageBrush;
 
+            updateGameImages();
+
             GameName = findGameName(0);
 
             changeSelectedGame();
@@ -71,6 +73,21 @@ namespace Game_Launcher.Steam
             checkKeyInput.Interval = TimeSpan.FromSeconds(0.15);
             checkKeyInput.Tick += KeyShortCuts_Tick;
             checkKeyInput.Start();
+        }
+
+
+        private void updateGameImages()
+        {
+            var buttons = new[] { Game1BG, Game2BG, Game3BG };
+            int i = 0;
+            foreach(string game in GameList)
+            {
+                gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{game}//icon.jpg", UriKind.Relative));
+                gameImageBrush = new ImageBrush(gameImage);
+
+                buttons[i].Background = gameImageBrush;
+                i++;
+            }
         }
 
         public static MediaPlayer mediaPlayer = new MediaPlayer();
@@ -273,19 +290,16 @@ namespace Game_Launcher.Steam
 
         private void updateMenuGameList()
         {
-            if (MenuNumGameList == 0 && MenuNumGameListLast != 0)
-            {
-                Game1BG.BorderBrush = Brushes.LightBlue;
-                Game2BG.BorderBrush = Brushes.Transparent;
-            }
-            if (MenuNumGameList == 1 && MenuNumGameListLast != 1)
-            {
-                Game1BG.BorderBrush = Brushes.Transparent;
-                Game2BG.BorderBrush = Brushes.LightBlue;
+            var buttons = new[] { Game1BG, Game2BG, Game3BG };
+            int i = 0;
+            foreach (Border button in buttons)
+            { 
+                button.BorderBrush = Brushes.Transparent;
             }
 
             if (MenuNumGameList != MenuNumGameListLast)
             {
+                buttons[MenuNumGameList].BorderBrush = Brushes.LightBlue;
                 GameName = findGameName(MenuNumGameList);
                 changeSelectedGame();
             }
@@ -305,8 +319,13 @@ namespace Game_Launcher.Steam
             updateMenuGameList();
         }
 
+        private async void Game3btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 2;
+            updateMenuGameList();
+        }
 
-        
+
 
     }
 }
