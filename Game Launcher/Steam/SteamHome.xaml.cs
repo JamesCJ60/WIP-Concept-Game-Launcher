@@ -34,7 +34,7 @@ namespace Game_Launcher.Steam
         public ImageBrush gameImageBrush;
         public static string path = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
         public string GameName = "";
-        public string[] GameList = { "Returnal", "HZD", "Doom Eternal" };
+        public string[] GameList = { "Returnal", "Horizon: Zero Dawn", "Doom Eternal" };
         public SteamHome()
         {
             InitializeComponent();
@@ -46,15 +46,6 @@ namespace Game_Launcher.Steam
 
             lblBat.Text = batPercent;
             lblTime.Text = time;
-
-            gameImage = new BitmapImage(new Uri(path + "//GameAssets//Returnal//icon.jpg", UriKind.Relative));
-            gameImageBrush = new ImageBrush(gameImage);
-
-            Game1BG.Background = gameImageBrush;
-
-            gameImage = new BitmapImage(new Uri(path + "//GameAssets//HZD//icon.jpg", UriKind.Relative));
-            gameImageBrush = new ImageBrush(gameImage);
-            Game2BG.Background = gameImageBrush;
 
             updateGameImages();
 
@@ -73,6 +64,8 @@ namespace Game_Launcher.Steam
             checkKeyInput.Interval = TimeSpan.FromSeconds(0.15);
             checkKeyInput.Tick += KeyShortCuts_Tick;
             checkKeyInput.Start();
+
+            lblGameName.Text = GameList[0].ToString();
         }
 
 
@@ -80,9 +73,13 @@ namespace Game_Launcher.Steam
         {
             var buttons = new[] { Game1BG, Game2BG, Game3BG };
             int i = 0;
+            string newGameName = "";
             foreach(string game in GameList)
             {
-                gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{game}//icon.jpg", UriKind.Relative));
+
+                newGameName = game.Replace(":", "");
+
+                gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpg", UriKind.Relative));
                 gameImageBrush = new ImageBrush(gameImage);
 
                 buttons[i].Background = gameImageBrush;
@@ -208,6 +205,7 @@ namespace Game_Launcher.Steam
             if (i <= GameList.Length)
             {
                 name = GameList[i];
+                name = name.Replace(":", "");
             }
 
             if (!File.Exists(path + $"//GameAssets//{name}//background.jpg"))
@@ -223,14 +221,16 @@ namespace Game_Launcher.Steam
             await StartAnimationForLabel1();
 
             string url = "";
-            if (File.Exists(path + $"//GameAssets//{GameName}//background.gif"))
+
+            string newGameName = GameName.Replace(":", "");
+
+            if (File.Exists(path + $"//GameAssets//{newGameName}//background.gif"))
             {
-                url = path + $"//GameAssets//{GameName}//background.gif";
+                url = path + $"//GameAssets//{newGameName}//background.gif";
             }
             else
             {
-
-                url = path + $"//GameAssets//{GameName}//background.jpg";
+                url = path + $"//GameAssets//{newGameName}//background.jpg";
             }
 
             var image = new BitmapImage();
@@ -241,7 +241,7 @@ namespace Game_Launcher.Steam
 
             await StartAnimationForLabel2();
 
-            playAudio(path + $"//GameAssets//{GameName}//audio.m4a");
+            playAudio(path + $"//GameAssets//{newGameName}//audio.m4a");
         }
 
         private static Controller controller;
@@ -278,7 +278,7 @@ namespace Game_Launcher.Steam
                 //detect if keyboard or controller combo is being activated
                 if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight) || tx > 0)
                 {
-                    if (MenuNumGameList < 1)
+                    if (MenuNumGameList < (GameList.Length - 1))
                     {
                         MenuNumGameList++;
                     }
@@ -286,19 +286,26 @@ namespace Game_Launcher.Steam
                     updateMenuGameList();
                 }
             }
+
+            double width = lblGameName.ActualWidth;
+            width = lblGameName.ActualWidth;
+            GameNameBar.Width = (width + 25);
         }
 
         private void updateMenuGameList()
         {
             var buttons = new[] { Game1BG, Game2BG, Game3BG };
             int i = 0;
-            foreach (Border button in buttons)
-            { 
-                button.BorderBrush = Brushes.Transparent;
-            }
 
             if (MenuNumGameList != MenuNumGameListLast)
             {
+                lblGameName.Text = GameList[MenuNumGameList].ToString();
+                foreach (Border button in buttons)
+                {
+                    button.BorderBrush = Brushes.Transparent;
+                }
+
+
                 buttons[MenuNumGameList].BorderBrush = Brushes.LightBlue;
                 GameName = findGameName(MenuNumGameList);
                 changeSelectedGame();
