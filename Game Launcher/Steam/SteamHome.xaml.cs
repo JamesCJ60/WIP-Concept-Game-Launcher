@@ -34,7 +34,8 @@ namespace Game_Launcher.Steam
         public ImageBrush gameImageBrush;
         public static string path = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
         public string GameName = "";
-        public string[] GameList = { "Returnal", "Horizon: Zero Dawn", "Doom Eternal" };
+        public static string[] GameList = { "Returnal", "Horizon: Zero Dawn", "Doom Eternal", "Cyberpunk 2077", "Hollow Knight", "Fallout 76", "Firewatch", "God of War" };
+        public static string[] SteamGameIDs = { "N/A", "1151640", "782330", "1091500", "367520", "1151340", "383870", "1593500" };
         public SteamHome()
         {
             InitializeComponent();
@@ -65,13 +66,19 @@ namespace Game_Launcher.Steam
             checkKeyInput.Tick += KeyShortCuts_Tick;
             checkKeyInput.Start();
 
+            //set up timer for key combo system
+            DispatcherTimer joystickInput = new DispatcherTimer();
+            checkKeyInput.Interval = TimeSpan.FromSeconds(0.25);
+            checkKeyInput.Tick += joystickInput_Tick;
+            checkKeyInput.Start();
+
             lblGameName.Text = GameList[0].ToString();
         }
 
 
         private void updateGameImages()
         {
-            var buttons = new[] { Game1BG, Game2BG, Game3BG };
+            var buttons = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG };
             int i = 0;
             string newGameName = "";
             foreach(string game in GameList)
@@ -79,7 +86,16 @@ namespace Game_Launcher.Steam
 
                 newGameName = game.Replace(":", "");
 
-                gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpg", UriKind.Relative));
+                if (File.Exists(path + $"//GameAssets//{newGameName}//icon.jpeg"))
+                {
+                    gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpeg", UriKind.Relative));
+                }
+                else
+                {
+                    gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpg", UriKind.Relative));
+                }
+
+                
                 gameImageBrush = new ImageBrush(gameImage);
 
                 buttons[i].Background = gameImageBrush;
@@ -114,7 +130,7 @@ namespace Game_Launcher.Steam
             Garbage_Collect();
         }
 
-        public async void getBattery()
+        public void getBattery()
         {
             int batteryLife = 0;
             try
@@ -208,7 +224,7 @@ namespace Game_Launcher.Steam
                 name = name.Replace(":", "");
             }
 
-            if (!File.Exists(path + $"//GameAssets//{name}//background.jpg"))
+            if (!File.Exists(path + $"//GameAssets//{name}//background.jpg") && !File.Exists(path + $"//GameAssets//{name}//background.jpeg") && !File.Exists(path + $"//GameAssets//{name}//background.gif"))
             {
                 return "default";
             }
@@ -227,6 +243,10 @@ namespace Game_Launcher.Steam
             if (File.Exists(path + $"//GameAssets//{newGameName}//background.gif"))
             {
                 url = path + $"//GameAssets//{newGameName}//background.gif";
+            }
+            else if (File.Exists(path + $"//GameAssets//{newGameName}//background.jpeg"))
+            {
+                url = path + $"//GameAssets//{newGameName}//background.jpeg";
             }
             else
             {
@@ -248,8 +268,21 @@ namespace Game_Launcher.Steam
 
         private int MenuNumGameList = 0;
         private int MenuNumGameListLast = 0;
+
+        private bool wasNotFocused = false;
         void KeyShortCuts_Tick(object sender, EventArgs e)
         {
+            if(MainWindow.ApplicationIsActivated() != true)
+            {
+                mediaPlayer.Pause();
+                wasNotFocused = true;
+            }
+            else if(MainWindow.ApplicationIsActivated() == true && wasNotFocused == true)
+            {
+                mediaPlayer.Play();
+                wasNotFocused = false;
+            }
+
 
             //Get controller
             controller = new Controller(UserIndex.One);
@@ -257,33 +290,51 @@ namespace Game_Launcher.Steam
             bool connected = controller.IsConnected;
 
 
-            if (connected)
+            if (connected && wasNotFocused == false)
             {
                 //get controller state
                 var state = controller.GetState();
                 SharpDX.XInput.Gamepad gamepad = controller.GetState().Gamepad;
-                float tx = gamepad.LeftThumbX / (float)short.MaxValue;
 
                 //detect if keyboard or controller combo is being activated
-                if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft) || tx < 0)
+                if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft))
                 {
                     if(MenuNumGameList > 0)
                     {
                         MenuNumGameList--;
                     }
 
+                    OnScrollDown();
                     updateMenuGameList();
                 }
 
                 //detect if keyboard or controller combo is being activated
-                if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight) || tx > 0)
+                if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
                 {
                     if (MenuNumGameList < (GameList.Length - 1))
                     {
                         MenuNumGameList++;
                     }
-
+                    OnScrollUp();
                     updateMenuGameList();
+                }
+
+                if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A))
+                {
+                    string steamLaunch = "steam://rungameid/" + SteamGameIDs[MenuNumGameList];
+                    if (SteamGameIDs[MenuNumGameList] != "N/A") System.Diagnostics.Process.Start(@"C:\Program Files (x86)\Steam\steam.exe", steamLaunch);
+                }
+
+                float trx = gamepad.RightThumbX;
+
+                if (trx > 18000)
+                {
+                    OnScrollUp();
+                }
+
+                if (trx < -18000)
+                {
+                    OnScrollDown();
                 }
             }
 
@@ -292,9 +343,73 @@ namespace Game_Launcher.Steam
             GameNameBar.Width = (width + 25);
         }
 
+        void joystickInput_Tick(object sender, EventArgs e)
+        {
+
+            //Get controller
+            controller = new Controller(UserIndex.One);
+
+            bool connected = controller.IsConnected;
+
+
+            if (connected && wasNotFocused == false)
+            {
+                //get controller state
+                var state = controller.GetState();
+                SharpDX.XInput.Gamepad gamepad = controller.GetState().Gamepad;
+                float tx = gamepad.LeftThumbX;
+                
+
+                //detect if keyboard or controller combo is being activated
+                if (tx < -18000)
+                {
+                    if (MenuNumGameList > 0)
+                    {
+                        MenuNumGameList--;
+                    }
+
+                    OnScrollDown();
+                    updateMenuGameList();
+                }
+
+                //detect if keyboard or controller combo is being activated
+                if (tx > 18000)
+                {
+                    if (MenuNumGameList < (GameList.Length - 1))
+                    {
+                        MenuNumGameList++;
+                    }
+
+                    OnScrollUp();
+                    updateMenuGameList();
+                }
+
+                
+            }
+
+            double width = lblGameName.ActualWidth;
+            width = lblGameName.ActualWidth;
+            GameNameBar.Width = (width + 25);
+        }
+
+        private void OnScrollUp()
+        {
+            var offset = MainScroll.ScrollableWidth / 7;
+
+            MainScroll.ScrollToHorizontalOffset(MainScroll.HorizontalOffset + offset);
+
+        }
+
+        private void OnScrollDown()
+        {
+            var offset = MainScroll.ScrollableWidth / 7;
+            MainScroll.ScrollToHorizontalOffset(MainScroll.HorizontalOffset - offset);
+
+        }
+
         private void updateMenuGameList()
         {
-            var buttons = new[] { Game1BG, Game2BG, Game3BG };
+            var buttons = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG };
             int i = 0;
 
             if (MenuNumGameList != MenuNumGameListLast)
@@ -320,19 +435,46 @@ namespace Game_Launcher.Steam
             updateMenuGameList();
         }
 
-        private async void Game2btn_Click(object sender, RoutedEventArgs e)
+        private void Game2btn_Click(object sender, RoutedEventArgs e)
         {
             MenuNumGameList = 1;
             updateMenuGameList();
         }
 
-        private async void Game3btn_Click(object sender, RoutedEventArgs e)
+        private void Game3btn_Click(object sender, RoutedEventArgs e)
         {
             MenuNumGameList = 2;
             updateMenuGameList();
         }
 
+        private void Game4btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 3;
+            updateMenuGameList();
+        }
 
+        private void Game5btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 4;
+            updateMenuGameList();
+        }
 
+        private void Game6btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 5;
+            updateMenuGameList();
+        }
+
+        private void Game7btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 6;
+            updateMenuGameList();
+        }
+
+        private void Game8btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 7;
+            updateMenuGameList();
+        }
     }
 }

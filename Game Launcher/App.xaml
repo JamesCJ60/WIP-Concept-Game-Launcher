@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:Game_Launcher"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/scrollbar.xaml"/>
+
+                <ResourceDictionary Source="Themes/Slider.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
