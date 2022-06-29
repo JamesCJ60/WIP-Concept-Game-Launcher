@@ -282,14 +282,14 @@ namespace Game_Launcher.Steam
         private async Task StartAnimationForLabel1()
         {
             GameBG.BeginAnimation(OpacityProperty, fadeOut);
-            await Task.Delay(500);
+            await Task.Delay(850);
         }
 
         //background fade in animation
         private async Task StartAnimationForLabel2()
         {
             GameBG.BeginAnimation(OpacityProperty, fadeIn);
-            await Task.Delay(500);
+            await Task.Delay(850);
         }
 
 
@@ -343,6 +343,14 @@ namespace Game_Launcher.Steam
                 url = path + $"//GameAssets//{newGameName}//background.jpg";
             }
 
+            await updateBGImage(url);
+
+            //Play new game audio
+            playAudio(path + $"//GameAssets//{newGameName}//audio.m4a");
+        }
+
+        private async Task updateBGImage(string url)
+        {
             //Save new image and load it
             var image = new BitmapImage();
             image.BeginInit();
@@ -352,9 +360,6 @@ namespace Game_Launcher.Steam
             ImageBehavior.SetAnimatedSource(GameBG, image);
             //Start fade in animation
             await StartAnimationForLabel2();
-
-            //Play new game audio
-            playAudio(path + $"//GameAssets//{newGameName}//audio.m4a");
         }
 
         void KeyShortCuts_Tick(object sender, EventArgs e)
