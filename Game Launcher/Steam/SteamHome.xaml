@@ -49,9 +49,9 @@
                 </Border>
             </StackPanel>
             <StackPanel VerticalAlignment="Center">
-                <Canvas DockPanel.Dock="Top" Height="75" HorizontalAlignment="left">
-                    <DockPanel Name="GameNameBar" Width="220" Height="50" Margin="32,0,0,0" LastChildFill="True" Panel.ZIndex="0">
-                        <Border Panel.ZIndex="0" CornerRadius="15" Background="#0f0f0f" Opacity="0.75">
+                <Canvas DockPanel.Dock="Top" Height="75" HorizontalAlignment="left" Width="Auto">
+                    <DockPanel Name="GameNameBar" Width="auto" Height="50" Margin="32,0,0,0" LastChildFill="True" Panel.ZIndex="0">
+                        <Border Panel.ZIndex="0" CornerRadius="15" Background="#0f0f0f" Opacity="0.80">
                             <Border Opacity="0.2">
                                 <Border.Effect>
                                     <BlurEffect Radius="50"/>

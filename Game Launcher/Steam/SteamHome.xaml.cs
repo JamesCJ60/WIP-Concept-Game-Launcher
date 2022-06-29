@@ -35,12 +35,12 @@ namespace Game_Launcher.Steam
 
         //Get current working directory
         public static string path = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
-        
+
         //Variables for steam games
         public string GameName = "";
         public static string[] GameList = FindSteamGames.GameNames;
         public static string[] SteamGameIDs = FindSteamGames.GameIDs;
-        
+
         //Variables for mediaplayer
         private static MediaPlayer mediaPlayer = new MediaPlayer();
         public static string MediaPath = "";
@@ -95,21 +95,16 @@ namespace Game_Launcher.Steam
 
             //set up timer for controller input
             DispatcherTimer checkKeyInput = new DispatcherTimer();
-            checkKeyInput.Interval = TimeSpan.FromSeconds(0.15);
+            checkKeyInput.Interval = TimeSpan.FromSeconds(0.18);
             checkKeyInput.Tick += KeyShortCuts_Tick;
             checkKeyInput.Start();
 
-            //set up timer for controller input
-            DispatcherTimer joystickInput = new DispatcherTimer();
-            checkKeyInput.Interval = TimeSpan.FromSeconds(0.25);
-            checkKeyInput.Tick += joystickInput_Tick;
-            checkKeyInput.Start();
 
             //set up timer for game name label update
             DispatcherTimer nameUpdate = new DispatcherTimer();
-            checkKeyInput.Interval = TimeSpan.FromSeconds(0.05);
-            checkKeyInput.Tick += gameName_Tick;
-            checkKeyInput.Start();
+            nameUpdate.Interval = TimeSpan.FromSeconds(0.05);
+            nameUpdate.Tick += gameName_Tick;
+            nameUpdate.Start();
 
             lblGameName.Text = GameList[0].ToString();
         }
@@ -131,13 +126,13 @@ namespace Game_Launcher.Steam
             SolidColorBrush borderBG;
 
             //Go through every game and assign an image or show textblock
-            foreach(string game in GameList)
+            foreach (string game in GameList)
             {
                 //Remove : from game names for url
                 newGameName = game.Replace(":", "");
-                
+
                 //Reset the test of the buttons
-                if(i < buttonText.Length)
+                if (i < buttonText.Length)
                 {
                     buttonText[i].Text = "";
                 }
@@ -243,7 +238,7 @@ namespace Game_Launcher.Steam
         }
 
 
-        
+
         //Update media player with current game BG music 
         private void playAudio(string audioPath)
         {
@@ -287,14 +282,14 @@ namespace Game_Launcher.Steam
         private async Task StartAnimationForLabel1()
         {
             GameBG.BeginAnimation(OpacityProperty, fadeOut);
-            await Task.Delay(850);
+            await Task.Delay(500);
         }
 
         //background fade in animation
         private async Task StartAnimationForLabel2()
         {
             GameBG.BeginAnimation(OpacityProperty, fadeIn);
-            await Task.Delay(850);
+            await Task.Delay(500);
         }
 
 
@@ -365,7 +360,7 @@ namespace Game_Launcher.Steam
         void KeyShortCuts_Tick(object sender, EventArgs e)
         {
             //If window is not focused stop music
-            if(MainWindow.ApplicationIsActivated() != true)
+            if (MainWindow.ApplicationIsActivated() != true)
             {
                 mediaPlayer.Pause();
                 wasNotFocused = true;
@@ -395,7 +390,7 @@ namespace Game_Launcher.Steam
                 if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft))
                 {
                     //Move down one
-                    if(MenuNumGameList > 0)
+                    if (MenuNumGameList > 0)
                     {
                         MenuNumGameList--;
                     }
@@ -442,26 +437,9 @@ namespace Game_Launcher.Steam
                 {
                     OnScrollDown();
                 }
-            }
-        }
 
-        void joystickInput_Tick(object sender, EventArgs e)
-        {
-
-            //Get controller
-            controller = new Controller(UserIndex.One);
-
-            //Make sure controller is connected
-            bool connected = controller.IsConnected;
-
-
-            if (connected && wasNotFocused == false)
-            {
-                //get controller state
-                var state = controller.GetState();
-                SharpDX.XInput.Gamepad gamepad = controller.GetState().Gamepad;
                 float tx = gamepad.LeftThumbX;
-                
+
 
                 //detect if keyboard or controller combo is being activated
                 if (tx < -18000)
@@ -538,15 +516,13 @@ namespace Game_Launcher.Steam
             MenuNumGameListLast = MenuNumGameList;
         }
 
-        string oldName = "";
         void gameName_Tick(object sender, EventArgs e)
         {
-            if(oldName != GameName)
+            if(GameNameBar.ActualWidth != lblGameName.ActualWidth)
             {
                 //Update game name label 
                 double width = lblGameName.ActualWidth;
                 GameNameBar.Width = (width + 28);
-                oldName = GameName;
             }
         }
 
