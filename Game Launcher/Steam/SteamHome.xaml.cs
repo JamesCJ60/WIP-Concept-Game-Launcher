@@ -105,6 +105,12 @@ namespace Game_Launcher.Steam
             checkKeyInput.Tick += joystickInput_Tick;
             checkKeyInput.Start();
 
+            //set up timer for game name label update
+            DispatcherTimer nameUpdate = new DispatcherTimer();
+            checkKeyInput.Interval = TimeSpan.FromSeconds(0.05);
+            checkKeyInput.Tick += gameName_Tick;
+            checkKeyInput.Start();
+
             lblGameName.Text = GameList[0].ToString();
         }
 
@@ -166,8 +172,6 @@ namespace Game_Launcher.Steam
                 i++;
             }
         }
-
-
 
         //garbage collection
         [DllImport("psapi.dll")]
@@ -268,7 +272,7 @@ namespace Game_Launcher.Steam
         {
             From = 1,
             To = 0,
-            Duration = new Duration(TimeSpan.FromSeconds(0.8)),
+            Duration = new Duration(TimeSpan.FromSeconds(0.85)),
         };
 
         //Fade in animation
@@ -276,7 +280,7 @@ namespace Game_Launcher.Steam
         {
             From = 0,
             To = 1,
-            Duration = new Duration(TimeSpan.FromSeconds(0.8)),
+            Duration = new Duration(TimeSpan.FromSeconds(0.85)),
         };
 
         //background fade out animation
@@ -439,11 +443,6 @@ namespace Game_Launcher.Steam
                     OnScrollDown();
                 }
             }
-
-            //Update game name label 
-            double width = lblGameName.ActualWidth;
-            width = lblGameName.ActualWidth;
-            GameNameBar.Width = (width + 25);
         }
 
         void joystickInput_Tick(object sender, EventArgs e)
@@ -490,14 +489,7 @@ namespace Game_Launcher.Steam
                     //Update menu to new select button
                     updateMenuGameList();
                 }
-
-                
             }
-
-            //Update game name label 
-            double width = lblGameName.ActualWidth;
-            width = lblGameName.ActualWidth;
-            GameNameBar.Width = (width + 28);
         }
 
         //Scroll scrollviewer up
@@ -544,6 +536,18 @@ namespace Game_Launcher.Steam
             }
 
             MenuNumGameListLast = MenuNumGameList;
+        }
+
+        string oldName = "";
+        void gameName_Tick(object sender, EventArgs e)
+        {
+            if(oldName != GameName)
+            {
+                //Update game name label 
+                double width = lblGameName.ActualWidth;
+                GameNameBar.Width = (width + 28);
+                oldName = GameName;
+            }
         }
 
         private void Game1btn_Click(object sender, RoutedEventArgs e)
