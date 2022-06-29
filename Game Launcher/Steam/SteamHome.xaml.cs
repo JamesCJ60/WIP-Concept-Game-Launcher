@@ -34,8 +34,8 @@ namespace Game_Launcher.Steam
         public ImageBrush gameImageBrush;
         public static string path = new Uri(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
         public string GameName = "";
-        public static string[] GameList = { "Returnal", "Horizon: Zero Dawn", "Doom Eternal", "Cyberpunk 2077", "Hollow Knight", "Fallout 76", "Firewatch", "God of War" };
-        public static string[] SteamGameIDs = { "N/A", "1151640", "782330", "1091500", "367520", "1151340", "383870", "1593500" };
+        public static string[] GameList = { "Returnal", "Horizon: Zero Dawn", "Doom Eternal", "Cyberpunk 2077", "Hollow Knight", "Fallout 76", "Firewatch", "God of War", "Control" };
+        public static string[] SteamGameIDs = { "N/A", "1151640", "782330", "1091500", "367520", "1151340", "383870", "1593500", "275147" };
         public SteamHome()
         {
             InitializeComponent();
@@ -78,27 +78,44 @@ namespace Game_Launcher.Steam
 
         private void updateGameImages()
         {
-            var buttons = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG };
+            var buttonBG = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG, Game9BG };
+            var buttonText = new[] { Game1lbl, Game2lbl, Game3lbl, Game4lbl, Game5lbl, Game6lbl, Game7lbl, Game8lbl, Game9lbl };
             int i = 0;
             string newGameName = "";
+            SolidColorBrush borderBG;
             foreach(string game in GameList)
             {
 
                 newGameName = game.Replace(":", "");
+                
+                if(i < buttonText.Length)
+                {
+                    buttonText[i].Text = "";
+                }
 
                 if (File.Exists(path + $"//GameAssets//{newGameName}//icon.jpeg"))
                 {
                     gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpeg", UriKind.Relative));
+                    gameImageBrush = new ImageBrush(gameImage);
+                    buttonBG[i].Background = gameImageBrush;
+                }
+                else if (File.Exists(path + $"//GameAssets//{newGameName}//icon.jpg"))
+                {
+                    gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpg", UriKind.Relative));
+                    gameImageBrush = new ImageBrush(gameImage);
+                    buttonBG[i].Background = gameImageBrush;
                 }
                 else
                 {
-                    gameImage = new BitmapImage(new Uri(path + $"//GameAssets//{newGameName}//icon.jpg", UriKind.Relative));
+                    borderBG = new SolidColorBrush(Color.FromArgb(98, 0, 0, 0));
+                    buttonText[i].Text = game;
+                    buttonText[i].TextAlignment = TextAlignment.Center;
+                    buttonBG[i].Background = borderBG;
                 }
 
-                
-                gameImageBrush = new ImageBrush(gameImage);
 
-                buttons[i].Background = gameImageBrush;
+
+                
                 i++;
             }
         }
@@ -175,6 +192,7 @@ namespace Game_Launcher.Steam
             mediaPlayer.Open(new Uri(audioPath));
             MediaPath = audioPath;
             mediaPlayer.MediaEnded += new EventHandler(Media_Ended);
+            mediaPlayer.Volume = 0.9;
             mediaPlayer.Play();
         }
 
@@ -218,7 +236,7 @@ namespace Game_Launcher.Steam
             int i = -1;
             do { i++; } while (i != button);
 
-            if (i <= GameList.Length)
+            if (i < GameList.Length)
             {
                 name = GameList[i];
                 name = name.Replace(":", "");
@@ -389,12 +407,12 @@ namespace Game_Launcher.Steam
 
             double width = lblGameName.ActualWidth;
             width = lblGameName.ActualWidth;
-            GameNameBar.Width = (width + 25);
+            GameNameBar.Width = (width + 28);
         }
 
         private void OnScrollUp()
         {
-            var offset = MainScroll.ScrollableWidth / 7;
+            var offset = MainScroll.ScrollableWidth / (GameList.Length - 2.975);
 
             MainScroll.ScrollToHorizontalOffset(MainScroll.HorizontalOffset + offset);
 
@@ -402,14 +420,14 @@ namespace Game_Launcher.Steam
 
         private void OnScrollDown()
         {
-            var offset = MainScroll.ScrollableWidth / 7;
+            var offset = MainScroll.ScrollableWidth / (GameList.Length - 2.975);
             MainScroll.ScrollToHorizontalOffset(MainScroll.HorizontalOffset - offset);
 
         }
 
         private void updateMenuGameList()
         {
-            var buttons = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG };
+            var buttons = new[] { Game1BG, Game2BG, Game3BG, Game4BG, Game5BG, Game6BG, Game7BG, Game8BG, Game9BG };
             int i = 0;
 
             if (MenuNumGameList != MenuNumGameListLast)
@@ -474,6 +492,11 @@ namespace Game_Launcher.Steam
         private void Game8btn_Click(object sender, RoutedEventArgs e)
         {
             MenuNumGameList = 7;
+            updateMenuGameList();
+        }
+        private void Game9btn_Click(object sender, RoutedEventArgs e)
+        {
+            MenuNumGameList = 8;
             updateMenuGameList();
         }
     }

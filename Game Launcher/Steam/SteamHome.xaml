@@ -66,12 +66,14 @@
                         <TextBlock Name="lblGameName" Foreground="White" FontSize="32" FontWeight="SemiBold" Margin="45,2,0,0" Panel.ZIndex="1" Width="auto">Game Name Menu Bar Top</TextBlock>
                     </StackPanel>
                 </Canvas>
-                <ScrollViewer x:Name="MainScroll" VerticalAlignment="Center" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="30,-10,30,0">
+                <ScrollViewer x:Name="MainScroll" VerticalAlignment="Center" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Auto" Margin="30,-10,30,0" Padding="0,0,0,10.5">
                     <StackPanel HorizontalAlignment="Left" Height="275" Orientation="Horizontal">
                         <StackPanel Name="Game1" Width="290" Height="270">
                         <Canvas>
-                            <Button x:Name="Game1btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0" Padding="0,0,0,0" Click="Game1btn_Click">
-                                <Border Name="Game1BG"  Height="268" Width="270" BorderBrush="LightBlue" BorderThickness="4" CornerRadius="10"></Border>
+                                <Button x:Name="Game1btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="0,0,0,0" Padding="0,0,0,0" Click="Game1btn_Click" FontSize="20" Foreground="White">
+                                    <Border Name="Game1BG"  Height="268" Width="270" BorderBrush="LightBlue" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game1lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="10"/>
@@ -83,7 +85,9 @@
                         <StackPanel Name="Game2" Width="290" Height="270">
                         <Canvas>
                             <Button x:Name="Game2btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-15,0,0,0" Padding="0,0,0,0" Click="Game2btn_Click">
-                                <Border Name="Game2BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                <Border Name="Game2BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game2lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                 <Button.Resources>
                                     <Style TargetType="{x:Type Border}">
                                         <Setter Property="CornerRadius" Value="10"/>
@@ -95,7 +99,9 @@
                         <StackPanel Name="Game3" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game3btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-33,0,0,0" Padding="0,0,0,0" Click="Game3btn_Click">
-                                    <Border Name="Game3BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game3BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game3lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -107,7 +113,9 @@
                         <StackPanel Name="Game4" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game4btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-50,0,0,0" Padding="0,0,0,0" Click="Game4btn_Click">
-                                    <Border Name="Game4BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game4BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game4lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -119,7 +127,9 @@
                         <StackPanel Name="Game5" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game5btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-65,0,0,0" Padding="0,0,0,0" Click="Game5btn_Click">
-                                    <Border Name="Game5BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game5BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game5lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -131,7 +141,9 @@
                         <StackPanel Name="Game6" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game6btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-80,0,0,0" Padding="0,0,0,0" Click="Game6btn_Click">
-                                    <Border Name="Game6BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game6BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game6lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -143,7 +155,9 @@
                         <StackPanel Name="Game7" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game7btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-95,0,0,0" Padding="0,0,0,0" Click="Game7btn_Click">
-                                    <Border Name="Game7BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game7BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game7lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
@@ -155,7 +169,23 @@
                         <StackPanel Name="Game8" Width="290" Height="270">
                             <Canvas>
                                 <Button x:Name="Game8btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-110,0,0,0" Padding="0,0,0,0" Click="Game8btn_Click">
-                                    <Border Name="Game8BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10"></Border>
+                                    <Border Name="Game8BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game8lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
+                                    <Button.Resources>
+                                        <Style TargetType="{x:Type Border}">
+                                            <Setter Property="CornerRadius" Value="10"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </Canvas>
+                        </StackPanel>
+                        <StackPanel Name="Game9" Width="290" Height="270">
+                            <Canvas>
+                                <Button x:Name="Game9btn" Height="auto" Width="auto" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderBrush="Transparent" BorderThickness="0" Margin="-125,0,0,0" Padding="0,0,0,0" Click="Game9btn_Click">
+                                    <Border Name="Game9BG"  Height="268" Width="270" BorderBrush="Transparent" BorderThickness="4" CornerRadius="10">
+                                        <TextBlock Name="Game9lbl" Height="auto" Width="auto" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" FontSize="32" FontWeight="SemiBold" TextWrapping="Wrap" TextTrimming="None">Test</TextBlock>
+                                    </Border>
                                     <Button.Resources>
                                         <Style TargetType="{x:Type Border}">
                                             <Setter Property="CornerRadius" Value="10"/>
